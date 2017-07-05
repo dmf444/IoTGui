@@ -23,46 +23,19 @@ class MainScreenLayout(GridLayout):
         buttons = self.get_button_list()
         keys = list(buttons.keys())
         page_number = self.page * 8
+        self.button_widgets = []
 
-        if(page_number + 0 < len(keys)):
-            self.button_1 = CustomWidgets.build_button(keys[page_number + 0], 63,230, [144, 144], [-50,0], "resources/button.png")
-            self.button_1.bind(on_press=buttons[keys[page_number + 0]])
-            self.add_widget(self.button_1)
-
-        if(page_number + 1 < len(keys)):
-            self.button_2 = CustomWidgets.build_button(keys[page_number + 1], 243, 230, [144, 144], [-50,0], "resources/button.png")
-            self.button_2.bind(on_press=buttons[keys[page_number + 1]])
-            self.add_widget(self.button_2)
-
-        if(page_number + 2 < len(keys)):
-            self.button_3 = CustomWidgets.build_button(keys[page_number + 2], 424, 230, [144, 144], [-50,0], "resources/button.png")
-            self.button_3.bind(on_press=buttons[keys[page_number + 2]])
-            self.add_widget(self.button_3)
-
-        if(page_number + 3 < len(keys)):
-            self.button_4 = CustomWidgets.build_button(keys[page_number + 3], 604, 230, [144, 144], [-50,0], "resources/button.png")
-            self.button_4.bind(on_press=buttons[keys[page_number + 3]])
-            self.add_widget(self.button_4)
-
-        if(page_number + 4 < len(keys)):
-            self.button_5 = CustomWidgets.build_button(keys[page_number + 4], 63, 70, [144,144], [-50, 0], "resources/button.png")
-            self.button_5.bind(on_press=buttons[keys[page_number + 4]])
-            self.add_widget(self.button_5)
-
-        if(page_number + 5 < len(keys)):
-            self.button_6 = CustomWidgets.build_button(keys[page_number + 5], 243, 70, [144, 144], [-50,0], "resources/button.png")
-            self.button_6.bind(on_press=buttons[keys[page_number + 5]])
-            self.add_widget(self.button_6)
-
-        if(page_number + 6 < len(keys)):
-            self.button_7 = CustomWidgets.build_button(keys[page_number + 6], 424,70, [144, 144], [-50,0], "resources/button.png")
-            self.button_7.bind(on_press=buttons[keys[page_number + 6]])
-            self.add_widget(self.button_7)
-
-        if(page_number + 7 < len(keys)):
-            self.button_8 = CustomWidgets.build_button(keys[page_number + 7], 604, 70, [144, 144], [-50,0], "resources/button.png")
-            self.button_8.bind(on_press=buttons[keys[page_number + 7]])
-            self.add_widget(self.button_8)
+        for j, buttonI in enumerate(buttons.keys()):
+            if j < page_number:
+                continue
+            if j > page_number + 8:
+                continue
+            x_pos = (63, 243, 424, 604)[j % 4]
+            y_pos = (230, 70)[int(j / 4) % 2]
+            button = CustomWidgets.build_button(buttonI, x_pos, y_pos, [144, 144], [-50, 0], "resources/button.png")
+            button.bind(on_press=buttons[buttonI])
+            self.button_widgets.append(button)
+            self.add_widget(button)
 
         self.title_image = CustomWidgets.build_label("Raspberry Pi IoT", 90, 420, [264, 79], [-140, 35], "resources/TitleBar.png")
         self.add_widget(self.title_image)
@@ -88,8 +61,25 @@ class MainScreenLayout(GridLayout):
         button_dict["Exit"] = self.exit_button_handler
         button_dict["Samsung TVs"] = self.wemo_devices
 
-
         return button_dict
+
+    def change_page(self, to_page):
+        for i in self.button_widgets:
+            self.remove_widget(i)
+
+        page_number = to_page * 8
+        buttons = self.get_button_list()
+        for j, buttonI in enumerate(buttons.keys()):
+            if j < page_number:
+                continue
+            if j > page_number + 8:
+                continue
+            x_pos = (63, 243, 424, 604)[j % 4]
+            y_pos = (230, 70)[int(j / 4) % 2]
+            button = CustomWidgets.build_button(buttonI, x_pos, y_pos, [144, 144], [-50, 0], "resources/button.png")
+            button.bind(on_press=buttons[buttonI])
+            self.button_widgets.append(button)
+            self.add_widget(button)
 
     def run_startup_animations(self):
         animation = Animation(y=365, duration=1)
