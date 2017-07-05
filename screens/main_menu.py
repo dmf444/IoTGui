@@ -2,6 +2,7 @@ from kivy.animation import Animation
 from kivy.app import App
 from kivy.graphics import Rectangle
 from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
