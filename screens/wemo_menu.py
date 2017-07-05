@@ -55,6 +55,8 @@ class WemoLayout(GridLayout):
             self.update_button()
 
     def go_home(self, *args):
+        self.screen.manager.transition.mode = "pop"
+        self.screen.manager.transition.direction = "right"
         self.screen.manager.current = "main"
 
     def select_wemo(self, *args):

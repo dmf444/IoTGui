@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.config import Config
-from kivy.uix.screenmanager import ScreenManager, RiseInTransition
+from kivy.uix.screenmanager import ScreenManager, RiseInTransition, CardTransition
 
 from globals import SCREEN_WIDTH, SCREEN_HEIGHT
 from screens.main_menu import MainScreen
@@ -11,7 +11,8 @@ from screens.wemo_menu import WemoScreen
 class IOTApp(App):
     def __init__(self, **kwargs):
         super(IOTApp, self).__init__(**kwargs)
-        self.screen_manager = ScreenManager(transition=RiseInTransition())
+        self.screen_manager = ScreenManager(transition=CardTransition())
+        self.screen_manager.transition.duration = .2
 
         self.screen_manager.add_widget(MainScreen(name='main'))
         self.screen_manager.add_widget(WemoScreen(name='Wemo'))

@@ -7,9 +7,9 @@ def build_button(disp_text='', xPos=0, yPos=0, rect_size=[10,10], pos=[0,0], res
     button = Button(text = disp_text)
     button.x = xPos
     button.y = yPos
-    button = texture(button, rect_size, pos, resource)
     button.size = rect_size
-    button.background_color = [0,0,0,0]
+    button.background_normal = resource
+    button.background_down = resource
     return button
 
 

@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
+from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from collections import OrderedDict
 
@@ -19,7 +20,7 @@ class MainScreenLayout(GridLayout):
     def __init__(self, **kwargs):
         super(MainScreenLayout, self).__init__(**kwargs)
         with self.canvas.before:
-            self.rect= Rectangle(source='resources/background.png', size=[SCREEN_WIDTH, SCREEN_HEIGHT], pos=self.pos)
+            self.rect = Rectangle(source='resources/background.png', size=[SCREEN_WIDTH, SCREEN_HEIGHT], pos=self.pos)
 
         # Next Page buttons
         self.button_back = CustomWidgets.build_button("", 0, 166, [33, 117], [-50, 0], "resources/backButton.png")
@@ -73,7 +74,14 @@ class MainScreenLayout(GridLayout):
         return evt_handler
 
     def hide_pagination(self):
-        pass # todo
+        if self.page == 0:
+            self.button_back.x = -1000
+        else:
+            self.button_back.x = 0
+        if self.page+1 > int(len(self.get_button_list())/8):
+            self.button_next.x = -2000
+        else:
+            self.button_next.x = 767
 
     def change_page(self, to_page):
         for i in self.button_widgets:
@@ -112,6 +120,8 @@ class MainScreenLayout(GridLayout):
         App.get_running_app().stop()
 
     def wemo_devices(self, *args):
+        self.screen.manager.transition.mode = "push"
+        self.screen.manager.transition.direction = "left"
         self.screen.manager.current = "Wemo"
 
 
