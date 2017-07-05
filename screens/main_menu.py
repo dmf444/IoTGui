@@ -19,27 +19,23 @@ class MainScreenLayout(GridLayout):
         super(MainScreenLayout, self).__init__(**kwargs)
         with self.canvas.before:
             self.rect= Rectangle(source='resources/background.png', size=[SCREEN_WIDTH, SCREEN_HEIGHT], pos=self.pos)
+
+        # Next Page buttons
+        self.button_back = CustomWidgets.build_button("", 0, 166, [33, 117], [-50, 0], "resources/backButton.png")
+        self.button_back.bind(on_press=self.page_changer(-1))
+        self.add_widget(self.button_back)
+        self.button_next = CustomWidgets.build_button("", 767, 166, [33, 117], [-50, 0], "resources/forwardButton.png")
+        self.button_next.bind(on_press=self.page_changer(+1))
+        self.add_widget(self.button_next)
+
+        # Set first button page
         self.page = 0
-        buttons = self.get_button_list()
-        keys = list(buttons.keys())
-        page_number = self.page * 8
         self.button_widgets = []
+        self.change_page(0)
 
-        for j, buttonI in enumerate(buttons.keys()):
-            if j < page_number:
-                continue
-            if j > page_number + 8:
-                continue
-            x_pos = (63, 243, 424, 604)[j % 4]
-            y_pos = (230, 70)[int(j / 4) % 2]
-            button = CustomWidgets.build_button(buttonI, x_pos, y_pos, [144, 144], [-50, 0], "resources/button.png")
-            button.bind(on_press=buttons[buttonI])
-            self.button_widgets.append(button)
-            self.add_widget(button)
-
+        # Make things look nice
         self.title_image = CustomWidgets.build_label("Raspberry Pi IoT", 90, 420, [264, 79], [-140, 35], "resources/TitleBar.png")
         self.add_widget(self.title_image)
-
         self.top_bar = Image(source='resources/barDesign.png', size=[694, 48], pos=[self.title_image.x - 20, 365 + 35])
         self.top_bar.color[3] = 0.0
         self.add_widget(self.top_bar)
@@ -63,6 +59,21 @@ class MainScreenLayout(GridLayout):
 
         return button_dict
 
+    # event handler factory
+    # For magic page changing
+    def page_changer(self, p):
+        obj = self
+        def evt_handler(self):
+            obj.page += p
+            if obj.page < 0:
+                obj.page = 0
+            if obj.page > int(len(obj.get_button_list())/8): obj.page -= 1
+            obj.change_page(obj.page)
+        return evt_handler
+
+    def hide_pagination(self):
+        pass # todo
+
     def change_page(self, to_page):
         for i in self.button_widgets:
             self.remove_widget(i)
@@ -72,7 +83,7 @@ class MainScreenLayout(GridLayout):
         for j, buttonI in enumerate(buttons.keys()):
             if j < page_number:
                 continue
-            if j > page_number + 8:
+            if j > page_number + 7:
                 continue
             x_pos = (63, 243, 424, 604)[j % 4]
             y_pos = (230, 70)[int(j / 4) % 2]
@@ -80,6 +91,7 @@ class MainScreenLayout(GridLayout):
             button.bind(on_press=buttons[buttonI])
             self.button_widgets.append(button)
             self.add_widget(button)
+        self.hide_pagination()
 
     def run_startup_animations(self):
         animation = Animation(y=365, duration=1)
