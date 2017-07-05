@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 
 
 def build_button(disp_text='', xPos=0, yPos=0, rect_size=[10,10], pos=[0,0], resource=''):
-    button = Button(text = disp_text)
+    button = Button(text=disp_text)
     button.x = xPos
     button.y = yPos
     button.size = rect_size
