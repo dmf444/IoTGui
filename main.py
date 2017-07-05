@@ -11,7 +11,7 @@ from screens.wemo_menu import WemoScreen
 class IOTApp(App):
     def __init__(self, **kwargs):
         super(IOTApp, self).__init__(**kwargs)
-        self.screen_manager = ScreenManager(transition=CardTransition())
+        self.screen_manager = ScreenManager(transition=RiseInTransition())
         self.screen_manager.transition.duration = .2
 
         self.screen_manager.add_widget(MainScreen(name='main'))

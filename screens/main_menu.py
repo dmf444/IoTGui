@@ -120,8 +120,6 @@ class MainScreenLayout(GridLayout):
         App.get_running_app().stop()
 
     def wemo_devices(self, *args):
-        self.screen.manager.transition.mode = "push"
-        self.screen.manager.transition.direction = "left"
         self.screen.manager.current = "Wemo"
 
 
