@@ -22,7 +22,7 @@ class WemoLayout(GridLayout):
 
         device_number = 0
         inital_y = 340
-        for device in Wemo.LOCAL_NAMES:
+        for device in Wemo.WEMO_NAME_MAP:
             self.add_widget(CustomWidgets.build_click_button(device, 10, inital_y - (55 * device_number), [177, 50], [-50,0], "resources/longbuttonNonSelect.png", self.select_wemo))
             device_number += 1
 
@@ -51,7 +51,7 @@ class WemoLayout(GridLayout):
 
     def toggle_light(self, *args):
         if(self._current_selected_wemo is not None):
-            Wemo.LOCAL_NAMES[self._current_selected_wemo].toggle()
+            Wemo.WEMO_NAME_MAP[self._current_selected_wemo].toggle()
             self.update_button()
 
     def go_home(self, *args):
@@ -66,11 +66,11 @@ class WemoLayout(GridLayout):
         self.wemo_name.text = self._current_selected_wemo
 
     def update_button(self):
-        state = Wemo.LOCAL_NAMES[self._current_selected_wemo].get_state()
+        state = Wemo.WEMO_NAME_MAP[self._current_selected_wemo].get_state()
         if(state == 1):
-            self.toggle_button.canvas.before.children[1].source = "resources/onbutton.png"
+            self.toggle_button.background_normal = "resources/onbutton.png"
         else:
-            self.toggle_button.canvas.before.children[1].source = "resources/offbutton.png"
+            self.toggle_button.background_normal = "resources/offbutton.png"
 
     def set_current_wemo(self, wemo_name):
         self._current_selected_wemo = wemo_name

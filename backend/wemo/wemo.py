@@ -1,7 +1,7 @@
 import pywemo
 
 DEVICES = []
-LOCAL_NAMES = {}
+WEMO_NAME_MAP = {}
 
 
 def scan_for_devices():
@@ -9,6 +9,8 @@ def scan_for_devices():
     DEVICES = pywemo.discover_devices()
     set_local_names()
 
+
 def set_local_names():
     for device in DEVICES:
-        LOCAL_NAMES[device.name] = device
+        WEMO_NAME_MAP[device.name] = device
+

@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.config import Config
-from kivy.uix.screenmanager import ScreenManager, RiseInTransition, CardTransition
+from kivy.uix.screenmanager import ScreenManager, RiseInTransition
 
 from globals import SCREEN_WIDTH, SCREEN_HEIGHT
 from screens.main_menu import MainScreen
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     Config.set('graphics', 'width', str(SCREEN_WIDTH))
     Config.set('graphics', 'window_state', 'visible')
     Config.set('graphics', 'resizable', '0')
-    #wemo.scan_for_devices()
+    wemo.scan_for_devices()
 
     app = IOTApp()
     app.run()
