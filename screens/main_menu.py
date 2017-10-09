@@ -1,3 +1,5 @@
+import functools
+
 from kivy.animation import Animation
 from kivy.app import App
 from kivy.graphics import Rectangle
@@ -24,10 +26,10 @@ class MainScreenLayout(GridLayout):
 
         # Next Page buttons
         self.button_back = CustomWidgets.build_button("", 0, 166, [33, 117], [-50, 0], "resources/backButton.png")
-        self.button_back.bind(on_press=self.page_changer(-1))
+        self.button_back.bind(on_press=functools.partial(self.change_page, -1))
         self.add_widget(self.button_back)
         self.button_next = CustomWidgets.build_button("", 767, 166, [33, 117], [-50, 0], "resources/forwardButton.png")
-        self.button_next.bind(on_press=self.page_changer(+1))
+        self.button_next.bind(on_press=functools.partial(self.change_page, +1))
         self.add_widget(self.button_next)
 
         # Set first button page
@@ -61,18 +63,6 @@ class MainScreenLayout(GridLayout):
 
         return button_dict
 
-    # event handler factory
-    # For magic page changing
-    def page_changer(self, p):
-        obj = self
-        def evt_handler(self):
-            obj.page += p
-            if obj.page < 0:
-                obj.page = 0
-            if obj.page > int(len(obj.get_button_list())/8): obj.page -= 1
-            obj.change_page(obj.page)
-        return evt_handler
-
     def hide_pagination(self):
         if self.page == 0:
             self.button_back.x = -1000
@@ -83,11 +73,17 @@ class MainScreenLayout(GridLayout):
         else:
             self.button_next.x = 767
 
-    def change_page(self, to_page):
+    def change_page(self, p, the_button=None):
+        self.page += p
+        if self.page < 0:
+            self.page = 0
+        if self.page > int(len(self.get_button_list()) / 8):
+            self.page -= 1
+
         for i in self.button_widgets:
             self.remove_widget(i)
 
-        page_number = to_page * 8
+        page_number = self.page * 8
         buttons = self.get_button_list()
         for j, buttonI in enumerate(buttons.keys()):
             if j < page_number:
