@@ -1,3 +1,4 @@
+from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
@@ -36,10 +37,11 @@ class WemoLayout(GridLayout):
         self.toggle_button.bind(on_press=self.toggle_light)
         self.add_widget(self.toggle_button)
 
-        self.title_name = Label(text="NAME:", font_size=25, bold=True, pos=[242, 331])
+        self.title_name = Label(text="NAME:", font_size=25, bold=True, pos=[242, 381], size=[220, 25])
+
         self.add_widget(self.title_name)
 
-        self.wemo_name = Label(text="None Selected", font_size=25, bold=True, pos=[242, 301])
+        self.wemo_name = Label(text="None Selected", text_size=[300, 25], font_size=25, pos=[222, 331], size=[300, 25], halign="left")
         self.add_widget(self.wemo_name)
 
         self.home_button = CustomWidgets.build_button('', 735, 420, [45, 45], [-50,0], resource="resources/home.png")
@@ -68,9 +70,20 @@ class WemoLayout(GridLayout):
     def update_button(self):
         state = Wemo.WEMO_NAME_MAP[self._current_selected_wemo].get_state()
         if(state == 1):
-            self.toggle_button.background_normal = "resources/onbutton.png"
+            print("SCREW YOU")
+            print("Button is {}".format(self.toggle_button.disabled))
+            d = "resources/onbutton.png"
+            self.canvas.ask_update()
         else:
-            self.toggle_button.background_normal = "resources/offbutton.png"
+            print("MISERERE MEI DEUS " + self.toggle_button.background_normal)
+            d = "resources/offbutton.png"
+            self.canvas.ask_update()
+
+        self.remove_widget(self.toggle_button)
+        togg = CustomWidgets.build_button('', 552, 142, [208, 208], [-50,0], resource=d)
+        togg.bind(on_press=self.toggle_light)
+        self.add_widget(togg)
+        self.toggle_button = togg
 
     def set_current_wemo(self, wemo_name):
         self._current_selected_wemo = wemo_name
