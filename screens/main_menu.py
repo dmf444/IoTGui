@@ -52,7 +52,7 @@ class MainScreenLayout(GridLayout):
     def get_button_list(self):
         button_dict = OrderedDict()
         button_dict["Wemo Switches"] = self.wemo_devices
-        button_dict["Weather Report"] = self.wemo_devices
+        button_dict["Weather Report"] = self.weather_screen
         button_dict["IFTTT"] = self.wemo_devices
         button_dict["Garage Doors"] = self.wemo_devices
         button_dict["Sprinkler System"] = self.wemo_devices
@@ -117,6 +117,10 @@ class MainScreenLayout(GridLayout):
 
     def wemo_devices(self, *args):
         self.screen.manager.current = "Wemo"
+
+    def weather_screen(self, *args):
+        self.screen.manager.screens[2].update_weather()
+        self.screen.manager.current = "Weather"
 
 
 class MainScreen(Screen):

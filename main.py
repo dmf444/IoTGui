@@ -6,6 +6,7 @@ from globals import SCREEN_WIDTH, SCREEN_HEIGHT
 from screens.main_menu import MainScreen
 from backend.wemo import wemo
 from screens.wemo_menu import WemoScreen
+from screens.weather_menu import WeatherScreen
 
 
 class IOTApp(App):
@@ -16,6 +17,7 @@ class IOTApp(App):
 
         self.screen_manager.add_widget(MainScreen(name='main'))
         self.screen_manager.add_widget(WemoScreen(name='Wemo'))
+        self.screen_manager.add_widget(WeatherScreen(name='Weather'))
         self.screen_manager.current = "main"
 
     def build(self):
