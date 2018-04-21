@@ -1,4 +1,5 @@
 import pyowm
+import datetime
 
 class weatherModule():
 
@@ -29,10 +30,14 @@ class weatherModule():
     def get_status(self, day=0):
         return self.forcast[day].get_detailed_status().title()
 
+    def get_time_string(self, day=0):
+        h = datetime.datetime.fromtimestamp(self.forcast[day].get_reference_time())
+        return h.strftime("%A - %I:%M %p")
 
 if(__name__ == "__main__"):
     m = weatherModule()
     m.query_week()
+    print(m.get_time_string())
     print(m.get_current_icon())
     print(m.get_current_temp())
     print(m.get_min_temp())
